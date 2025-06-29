@@ -12,6 +12,7 @@ import utils
 from initialize import initialize
 import components as cn
 import constants as ct
+import traceback
 
 
 ############################################################
@@ -32,8 +33,10 @@ logger = logging.getLogger(ct.LOGGER_NAME)
 try:
     initialize()
 except Exception as e:
-    logger.error(f"{ct.INITIALIZE_ERROR_MESSAGE}\n{e}")
-    st.error(utils.build_error_message(ct.INITIALIZE_ERROR_MESSAGE))
+    # logger.error(f"{ct.INITIALIZE_ERROR_MESSAGE}\n{e}")
+    # st.error(utils.build_error_message(ct.INITIALIZE_ERROR_MESSAGE))
+    logger.error(f"{ct.INITIALIZE_ERROR_MESSAGE}\n{traceback.format_exc()}")
+    st.error(f"{ct.INITIALIZE_ERROR_MESSAGE}\n\n{traceback.format_exc()}")
     st.stop()
 
 # アプリ起動時のログ出力
