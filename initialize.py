@@ -36,6 +36,10 @@ def initialize():
     """
     画面読み込み時に実行する初期化処理
     """
+    print("✅ initialize() 開始")
+    print(f"📄 RAG_SOURCE_PATH: {ct.RAG_SOURCE_PATH}")
+    print(f"📄 OPENAI_API_KEY: {os.getenv('OPENAI_API_KEY') is not None}")  # TrueならOK
+
     # 初期化データの用意
     initialize_session_state()
     # ログ出力用にセッションIDを生成
