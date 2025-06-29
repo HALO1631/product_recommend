@@ -15,12 +15,12 @@ from dotenv import load_dotenv
 import streamlit as st
 from langchain_community.document_loaders.csv_loader import CSVLoader
 from langchain_openai import OpenAIEmbeddings
-# from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 from langchain_community.retrievers import BM25Retriever
 from langchain.retrievers import EnsembleRetriever
 import utils
 import constants as ct
-from langchain_community.vectorstores import FAISS
+# from langchain_community.vectorstores import FAISS
 
 
 ############################################################
@@ -110,11 +110,11 @@ def initialize_retriever():
         docs_all.append(doc.page_content)
 
     embeddings = OpenAIEmbeddings()
-    # db = Chroma.from_documents(docs, embedding=embeddings)
-    faiss_db = FAISS.from_documents(docs, embeddings)
+    db = Chroma.from_documents(docs, embedding=embeddings)
+    # faiss_db = FAISS.from_documents(docs, embeddings)
 
-    # retriever = db.as_retriever(search_kwargs={"k": ct.TOP_K})
-    faiss_retriever = faiss_db.as_retriever(search_kwargs={"k": ct.TOP_K})
+    retriever = db.as_retriever(search_kwargs={"k": ct.TOP_K})
+    # faiss_retriever = faiss_db.as_retriever(search_kwargs={"k": ct.TOP_K})
 
     bm25_retriever = BM25Retriever.from_texts(
         docs_all,
@@ -122,7 +122,7 @@ def initialize_retriever():
         k=ct.TOP_K
     )
     ensemble_retriever = EnsembleRetriever(
-        retrievers=[bm25_retriever, faiss_retriever],
+        retrievers=[bm25_retriever, retriever],
         weights=ct.RETRIEVER_WEIGHTS
     )
 
